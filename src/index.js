@@ -2,12 +2,13 @@ const venom = require("venom-bot");
 const { GoogleGenerativeAI } = require("@google/generative-ai");
 const banco = require("./banco");
 const treinamento = require("./treinamento");
+const { apiKey } = require("./api");
 
-// Guardar histórico de chats por número de telefone
+// Historico por Numeror de Telefone
 const chatsUsuarios = new Map();
 
 // Instância do Google Generative AI fora do onMessage para evitar recriação repetida
-const genAI = new GoogleGenerativeAI("AIzaSyDO0zgbN6zVAzE2W-902Akkgqs_sSVbbC4");
+const genAI = new GoogleGenerativeAI(apiKey);
 const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
 const start = (client) => {
@@ -45,13 +46,13 @@ const start = (client) => {
       );
 
       if (existingHistory) {
-        // Se o histórico já existe, adicione a nova entrada
+        // Se o histórico já existe, add a nova entrada
         existingHistory.consultas.push({
           mensagemUsuario: message.body,
           respostaBot: text,
         });
       } else {
-        // Caso contrário, crie um novo histórico
+        //Cria novo historico
         banco.db.push({
           numeroTelefone: message.from,
           consultas: [
@@ -63,7 +64,7 @@ const start = (client) => {
         });
       }
 
-      // Envia a resposta ao cliente
+      // Rrespota ao cliente
       await client.sendText(message.from, text);
     } catch (error) {
       console.error("Erro ao processar a mensagem:", error);

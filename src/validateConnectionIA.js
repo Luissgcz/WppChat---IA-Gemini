@@ -1,5 +1,6 @@
 const { GoogleGenerativeAI } = require("@google/generative-ai");
-const banco = require('./banco'); // Importando o banco com db: []
+const banco = require("./banco");
+const { apiKey } = require("./api");
 
 const treinamento = `Voce esta simulando um atendende da pizzaria Bella Itália, segue infomações.
 História da Pizzaria Bella Itália
@@ -51,46 +52,40 @@ Sábados e Domingos: das 17h às 00h
 Formas de Pagamento:
 Aceitamos todos os cartões de crédito e débito, além de PIX e dinheiro. Também oferecemos a opção de pagamento pelo aplicativo de delivery.`;
 
-// Acessando sua chave da API como variável de ambiente (veja "Configurar sua chave API" acima)
-const genAI = new GoogleGenerativeAI('AIzaSyDO0zgbN6zVAzE2W-902Akkgqs_sSVbbC4');
+const genAI = new GoogleGenerativeAI(apiKey);
 
 async function run() {
-    // O modelo Gemini 1.5 é versátil e funciona com conversas de várias etapas (como bate-papo)
-    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+  const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
-    // Iniciando uma conversa com o histórico
-    const chat = model.startChat({
-        history: [
-            {
-                role: "user",
-                parts: [{ text: treinamento }],
-            }
-        ],
-        generationConfig: {
-            maxOutputTokens: 100,
-        },
-    });
+  // Iniciando uma conversa com o histórico
+  const chat = model.startChat({
+    history: [
+      {
+        role: "user",
+        parts: [{ text: treinamento }],
+      },
+    ],
+    generationConfig: {
+      maxOutputTokens: 100,
+    },
+  });
 
-    // Mensagem a ser enviada ao modelo de chat
-    const msg = "Me mostre o cardapio";
+  const msg = "Me mostre o cardapio";
 
-    // Enviando mensagem para o modelo e aguardando a resposta
-    const result = await chat.sendMessage(msg);
+  // Enviando mensagem para o modelo e aguardando a resposta
+  const result = await chat.sendMessage(msg);
 
-    // Acessando corretamente o texto da resposta
-    const text = await result.response.text();
+  // Acessando o texto da resposta
+  const text = await result.response.text();
+  console.log(text);
 
-    // Exibindo a resposta do modelo
-    console.log(text);
-
-    // Armazenando a interação no banco de dados
-    banco.db.push({
-        userMessage: msg,
-        modelResponse: text, // Aqui a resposta correta
-    });
-
-    // Opcional: exibe o conteúdo do banco de dados
-    console.log("Histórico de consultas atualizado:", banco.db);
+  // Armazenando no Banco Interno
+  banco.db.push({
+    userMessage: msg,
+    modelResponse: text,
+  });
+  //Teste
+  console.log("Histórico de consultas atualizado:", banco.db);
 }
 
 run();

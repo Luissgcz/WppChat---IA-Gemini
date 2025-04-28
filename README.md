@@ -19,25 +19,25 @@ Este projeto implementa um chatbot para a **Pizzaria Bella Itália** utilizando 
 Antes de executar o projeto, instale as dependências necessárias utilizando o `npm`. No diretório do projeto, execute o comando:
 
 npm install
-2. Configurar a API do Google:
+### 2. Configurar API do Google:
 Para usar a API Google Generative AI, você precisará de uma chave de API válida. Faça o seguinte:
 
 A chave da API está configurada diretamente no código:
 const genAI = new GoogleGenerativeAI("SUA-CHAVE-DE-API");
 Substitua "SUA-CHAVE-DE-API" pela sua chave de API pessoal, que pode ser obtida na Google.
 
-3. Inicializar o Projeto:
+### 3. Inicializar o Projeto:
 Com as dependências instaladas e a chave de API configurada, inicie o projeto com o comando:
 node index.js
 
-4. Estrutura do Projeto:
+### 4. Estrutura do Projeto:
 index.js: Arquivo principal que executa o bot e lida com as interações via WhatsApp.
 
 banco.js: Arquivo que contém o banco de dados local para armazenar o histórico de consultas de clientes.
 
 treinamento.js: Arquivo contendo o treinamento inicial para o chatbot, com informações sobre a pizzaria, cardápio, promoções e serviços.
 
-5. Como Funciona:
+### 5. Como Funciona:
 O bot começa a funcionar assim que recebe uma mensagem de um usuário via WhatsApp.
 
 Ele verifica se já existe um histórico de conversas para o número de telefone do usuário.
@@ -48,10 +48,10 @@ O modelo de IA gera uma resposta com base na mensagem recebida e o bot a envia d
 
 O histórico das conversas (mensagens e respostas) é armazenado localmente no banco de dados em memória (banco.js).
 
-6. Armazenamento de Histórico:
+### 6. Armazenamento do Histórico:
 O histórico das interações com os clientes é armazenado em um banco de dados simples (um array em memória), onde são registradas as mensagens dos usuários e as respostas do bot.
 
-7. Possíveis Melhorias:
+### 7. Melhorias:
 Implementar persistência do banco de dados (Utilizando um DB Real (MySQL | Postgres).
 
 Adicionar mais interações e fluxos de conversa para melhorar a experiência do usuário.
